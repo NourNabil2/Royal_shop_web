@@ -368,7 +368,7 @@ class _HeroHeaderState extends State<HeroHeader> with TickerProviderStateMixin {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(slide.image),
+              image: AssetImage(slide.image),
               fit: BoxFit.cover,
               alignment: Alignment(
                 -pageOffset.clamp(-1.0, 1.0), // Parallax horizontal movement
