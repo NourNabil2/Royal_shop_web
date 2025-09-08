@@ -394,7 +394,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(widget.product.imageUrls[_selectedImageIndex]),
+                                  image: AssetImage(widget.product.imageUrls[_selectedImageIndex]),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -409,7 +409,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(widget.product.imageUrls[_selectedImageIndex]),
+                                  image: AssetImage(widget.product.imageUrls[_selectedImageIndex]),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -1553,7 +1553,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                  image: NetworkImage(widget.product.imageUrls[_selectedImageIndex]),
+                  image: AssetImage(widget.product.imageUrls[_selectedImageIndex]),
                   fit: BoxFit.contain,
                 ),
               ),

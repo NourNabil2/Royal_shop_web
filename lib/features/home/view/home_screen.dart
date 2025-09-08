@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 60),
-            FooterSection(),
+            const FooterSection(),
           ],
         ),
       ),
