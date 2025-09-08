@@ -1,4 +1,4 @@
-// Advanced Responsive App Bar Component
+// Advanced Responsive App Bar Component (centered title)
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +13,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomAppBarState createState() => _CustomAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(88);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderStateMixin {
@@ -29,8 +29,8 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
+    _scaleAnimation = Tween<double>(begin: 0.96, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
     _controller.forward();
   }
@@ -41,34 +41,28 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
     super.dispose();
   }
 
-  // Helper method to get responsive dimensions and breakpoints
   Map<String, dynamic> _getResponsiveConfig(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Define breakpoints
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
-    final isDesktop = screenWidth >= 1024;
+    final w = MediaQuery.of(context).size.width;
+    final isMobile = w < 768;
+    final isTablet = w >= 768 && w < 1024;
+    final isDesktop = w >= 1024;
 
     return {
       'isMobile': isMobile,
       'isTablet': isTablet,
       'isDesktop': isDesktop,
-      'logoSize': isMobile ? 20.0 : (isTablet ? 22.0 : 24.0),
       'iconSize': isMobile ? 20.0 : (isTablet ? 22.0 : 24.0),
-      'titleFontSize': isMobile ? 18.0 : (isTablet ? 20.0 : 24.0),
-      'subtitleFontSize': isMobile ? 10.0 : (isTablet ? 11.0 : 12.0),
+      'titleFontSize': isMobile ? 22.0 : (isTablet ? 26.0 : 30.0),
+      'subtitleFontSize': isMobile ? 0.0 : (isTablet ? 11.0 : 12.0),
       'navFontSize': isMobile ? 12.0 : (isTablet ? 13.0 : 14.0),
-      'searchWidth': isMobile ? 150.0 : (isTablet ? 180.0 : 200.0),
-      'horizontalPadding': isMobile ? 8.0 : (isTablet ? 12.0 : 16.0),
-      'showNavButtons': !isMobile, // Hide navigation buttons on mobile
-      'showSubtitle': !isMobile || screenWidth > 400, // Hide subtitle on very small screens
+      'searchWidth': isMobile ? 150.0 : (isTablet ? 210.0 : 260.0),
+      'hPad': isMobile ? 8.0 : (isTablet ? 12.0 : 16.0),
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    final config = _getResponsiveConfig(context);
+    final c = _getResponsiveConfig(context);
 
     return AnimatedBuilder(
       animation: _scaleAnimation,
@@ -76,35 +70,73 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
         return Transform.scale(
           scale: _scaleAnimation.value,
           child: Container(
-            height: 80,
+            height: widget.preferredSize.height,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
                   Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                  Theme.of(context).colorScheme.primary.withOpacity(0.85),
                   Theme.of(context).colorScheme.secondary,
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                  blurRadius: 20,
-                  offset: const Offset(0, 5),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.25),
+                  blurRadius: 22,
+                  offset: const Offset(0, 10),
                 ),
               ],
             ),
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              toolbarHeight: 80,
-              leading: config['isMobile'] ? _buildMobileMenuButton() : null,
-              title: _buildResponsiveTitle(config),
-              centerTitle: false,
-              actions: config['isMobile']
-                  ? _buildMobileActions(config)
-                  : _buildDesktopActions(config),
+            child: SafeArea(
+              child: SizedBox(
+                height: 64,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Left + Right controls (kept on the edges)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: c['hPad']),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // LEFT SIDE
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (c['isMobile']) _buildMobileMenuButton(c),
+                              if (!c['isMobile']) _buildSearchButton(c),
+                            ],
+                          ),
+
+                          // RIGHT SIDE
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (c['isMobile']) _buildSearchButton(c),
+                              if (!c['isMobile']) ...[
+                                const SizedBox(width: 12),
+                                _buildNavigationButtons(c),
+                              ],
+                              const SizedBox(width: 12),
+                              _buildThemeButton(c),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // TRUE-CENTER TITLE (independent of leading/actions widths)
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: _buildCenteredTitle(c),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
@@ -112,253 +144,134 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
     );
   }
 
-  Widget _buildMobileMenuButton() {
+  Widget _buildCenteredTitle(Map<String, dynamic> c) {
+    final showSubtitle = !c['isMobile'] && c['subtitleFontSize'] > 0.0;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text(
+          'Royal',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Symphony',        // 👈 خطك المخصص
+            fontSize: 36,                  // نضبطه يدويًا عشان اللمسة الفخمة
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+            height: 1.2,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (showSubtitle)
+          Text(
+            'Premium Collection',
+            style: GoogleFonts.cairo(
+              fontSize: c['subtitleFontSize'],
+              color: Colors.white.withOpacity(0.85),
+              fontWeight: FontWeight.w300,
+              letterSpacing: 0.6,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+      ],
+    ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.1);
+  }
+
+  Widget _buildMobileMenuButton(Map<String, dynamic> c) {
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(left: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withOpacity(0.16),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
       ),
       child: IconButton(
         onPressed: () {
-          setState(() {
-            _isMobileMenuOpen = !_isMobileMenuOpen;
-          });
+          setState(() => _isMobileMenuOpen = !_isMobileMenuOpen);
           _showMobileMenu();
         },
         icon: Icon(
           _isMobileMenuOpen ? Icons.close : Icons.menu,
           color: Colors.white,
+          size: c['iconSize'],
         ),
+        tooltip: 'Menu',
       ),
     );
   }
 
-  Widget _buildResponsiveTitle(Map<String, dynamic> config) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.shopping_bag_outlined,
-            size: config['logoSize'],
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Royal design',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: config['titleFontSize'],
-                  color: Colors.white,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (config['showSubtitle'])
-                Text(
-                  'Premium Collection',
-                  style: GoogleFonts.poppins(
-                    fontSize: config['subtitleFontSize'],
-                    color: Colors.white.withOpacity(0.8),
-                    fontWeight: FontWeight.w300,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-            ],
-          ),
-        ),
-      ],
-    ).animate().fadeIn(duration: 800.ms).slideX(begin: -0.3);
-  }
-
-  List<Widget> _buildMobileActions(Map<String, dynamic> config) {
-    return [
-      _buildSearchButton(config),
-      const SizedBox(width: 8),
-      _buildCartButton(config),
-      const SizedBox(width: 8),
-      _buildThemeButton(config),
-      SizedBox(width: config['horizontalPadding']),
-    ];
-  }
-
-  List<Widget> _buildDesktopActions(Map<String, dynamic> config) {
-    return [
-      _buildSearchButton(config),
-      const SizedBox(width: 12),
-      if (config['showNavButtons']) _buildNavigationButtons(config),
-      if (config['showNavButtons']) const SizedBox(width: 12),
-      _buildCartButton(config),
-      const SizedBox(width: 12),
-      _buildThemeButton(config),
-      SizedBox(width: config['horizontalPadding']),
-    ];
-  }
-
-  Widget _buildSearchButton(Map<String, dynamic> config) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      width: _isSearchExpanded ? config['searchWidth'] : 50,
-      height: 45,
+// في custom_app_bar.dart
+  Widget _buildSearchButton(Map<String, dynamic> c) {
+    return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.3),
-          width: 1,
-        ),
+        color: Colors.white.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isSearchExpanded = !_isSearchExpanded;
-              });
-            },
-            icon: Icon(
-              _isSearchExpanded ? Icons.close : Icons.search,
-              color: Colors.white,
-              size: config['iconSize'],
-            ),
-          ),
-          if (_isSearchExpanded)
-            Expanded(
-              child: TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Search products...',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: config['isMobile'] ? 12 : 14,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: config['isMobile'] ? 12 : 14,
-                ),
-              ),
-            ),
-        ],
+      child: IconButton(
+        onPressed: () => context.push('/search'),
+        icon: Icon(Icons.search, color: Colors.white, size: c['iconSize']),
       ),
     );
   }
 
-  Widget _buildNavigationButtons(Map<String, dynamic> config) {
+  Widget _buildNavigationButtons(Map<String, dynamic> c) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.18)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildNavButton(context, 'Home', () => context.go('/'), config),
-          _buildNavButton(context, 'Contact', () => context.go('/contact'), config),
+          _buildNavBtn('الرئيسية', () => context.go('/'), c),
+          _buildNavBtn('تواصل معنا', () => context.go('/contact'), c),
         ],
       ),
     );
   }
 
-  Widget _buildCartButton(Map<String, dynamic> config) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Stack(
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.white,
-              size: config['iconSize'],
-            ),
-          ),
-          Positioned(
-            right: 8,
-            top: 8,
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              constraints: const BoxConstraints(
-                minWidth: 18,
-                minHeight: 18,
-              ),
-              child: Text(
-                '3',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: config['isMobile'] ? 9 : 10,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildThemeButton(Map<String, dynamic> config) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: IconButton(
-        onPressed: widget.onThemeToggle,
-        icon: Icon(
-          Theme.of(context).brightness == Brightness.dark
-              ? Icons.light_mode
-              : Icons.dark_mode,
-          color: Colors.white,
-          size: config['iconSize'],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavButton(BuildContext context, String title, VoidCallback onPressed, Map<String, dynamic> config) {
+  Widget _buildNavBtn(String title, VoidCallback onPressed, Map<String, dynamic> c) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
           padding: EdgeInsets.symmetric(
-            horizontal: config['isTablet'] ? 12 : 16,
+            horizontal: c['isTablet'] ? 12 : 16,
             vertical: 8,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(
           title,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
+          style: GoogleFonts.cairo(
+            fontSize: c['navFontSize'],
             fontWeight: FontWeight.w500,
-            fontSize: config['navFontSize'],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildThemeButton(Map<String, dynamic> c) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.16),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
+      ),
+      child: IconButton(
+        onPressed: widget.onThemeToggle,
+        icon: Icon(
+          Theme.of(context).brightness == Brightness.dark ? Icons.light_mode : Icons.dark_mode,
+          color: Colors.white,
+          size: c['iconSize'],
+        ),
+        tooltip: 'Toggle Theme',
       ),
     );
   }
@@ -371,7 +284,7 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.42,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -385,6 +298,13 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 20,
+              offset: const Offset(0, -6),
+            ),
+          ],
         ),
         child: Column(
           children: [
@@ -397,36 +317,25 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
             Text(
               'Navigation Menu',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
+              style: GoogleFonts.cairo(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                letterSpacing: 0.3,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 14),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 children: [
-                  _buildMobileMenuItem('Home', Icons.home, () {
-                    Navigator.pop(context);
-                    context.go('/');
-                  }),
-                  _buildMobileMenuItem('Contact', Icons.contact_page, () {
-                    Navigator.pop(context);
-                    context.go('/contact');
-                  }),
-                  _buildMobileMenuItem('Profile', Icons.person, () {
-                    Navigator.pop(context);
-                    // Handle profile navigation
-                  }),
-                  _buildMobileMenuItem('Settings', Icons.settings, () {
-                    Navigator.pop(context);
-                    // Handle settings navigation
-                  }),
+                  _buildMobileMenuItem('Home', Icons.home, () { Navigator.pop(context); context.go('/'); }),
+                  _buildMobileMenuItem('Contact', Icons.contact_page, () { Navigator.pop(context); context.go('/contact'); }),
+                  _buildMobileMenuItem('Profile', Icons.person, () { Navigator.pop(context); }),
+                  _buildMobileMenuItem('Settings', Icons.settings, () { Navigator.pop(context); }),
                 ],
               ),
             ),
@@ -434,9 +343,7 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
         ),
       ),
     ).whenComplete(() {
-      setState(() {
-        _isMobileMenuOpen = false;
-      });
+      setState(() => _isMobileMenuOpen = false);
     });
   }
 
@@ -444,25 +351,23 @@ class _CustomAppBarState extends State<CustomAppBar> with SingleTickerProviderSt
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withOpacity(0.12),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.18)),
       ),
       child: ListTile(
         leading: Icon(icon, color: Colors.white),
         title: Text(
           title,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.cairo(
             color: Colors.white,
             fontWeight: FontWeight.w500,
           ),
         ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.white,
-          size: 16,
-        ),
+        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
         onTap: onTap,
       ),
     );
   }
 }
+

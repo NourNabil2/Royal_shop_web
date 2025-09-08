@@ -30,18 +30,18 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Featured Products',
-                    style: GoogleFonts.poppins(
+                    'منتاجاتنا',
+                    style: GoogleFonts.cairo(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
                   ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.2),
                   const SizedBox(height: 8),
                   Text(
-                    'Discover our handpicked selection of premium products',
+                    'اكتشف مجموعتنا المختارة بعناية من الكروت، الأكياس، والبادجات بجودة عالية',
                     style: TextStyle(
                       fontSize: 16,
                       color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),

@@ -28,18 +28,18 @@ class ECommerceApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF6366F1),
+              seedColor: const Color(0xFFce9fc9),
               brightness: Brightness.light,
             ),
-            textTheme: GoogleFonts.poppinsTextTheme(),
+            textTheme: GoogleFonts.cairoTextTheme(),
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF6366F1),
+              seedColor: const Color(0xFFce9fc9),
               brightness: Brightness.dark,
             ),
-            textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
+            textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme),
           ),
           themeMode: themeController.themeMode,
           routerConfig: router,

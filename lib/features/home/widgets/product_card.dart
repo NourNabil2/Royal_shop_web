@@ -76,7 +76,7 @@ class _ProductCardState extends State<ProductCard> {
                           children: [
                             Text(
                               widget.product.name,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.cairo(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
                               ),

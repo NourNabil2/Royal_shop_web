@@ -24,22 +24,22 @@ class _HeroHeaderState extends State<HeroHeader> with TickerProviderStateMixin {
 
   final List<SlideData> slides = [
     SlideData(
-      title: 'Discover Premium Products',
-      subtitle: 'Quality meets innovation in our curated collection',
-      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=600&fit=crop',
-      buttonText: 'Explore Collection',
+      title: 'كل اللي محتاجه براندك في مكان واحد',
+      subtitle: 'كروت، بادجات، استيكرات وأكياس بجودة عالية تعكس هوية مصنعك أو مشروعك.',
+      image: 'https://scontent.fcai20-6.fna.fbcdn.net/v/t39.30808-6/478412549_122262298922002114_5467925456366657800_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeEwGpm80DHgXerFNU_CgjH_2SVvH2_usf_ZJW8fb-6x_yvl09cQKZVKDRSvxCHisZ5njTlWc3GACVacAW7E01QS&_nc_ohc=dsZsz52u9MIQ7kNvwEXkAtU&_nc_oc=AdnVjwKMpjPWDLEsXHYRdsbG2-RUx-TpfiCTIGt51bOkvkv1qd1t1UVRynNBlF8XGns&_nc_zt=23&_nc_ht=scontent.fcai20-6.fna&_nc_gid=_Qim-ZGYKwRMW3ABw5jXdA&oh=00_AfYUS0HjjkE68c6JjJBI3EEZL2MiY-50n1g-vjhMTmVHvA&oe=68C3DA2C',
+      buttonText: 'تسوق الآن',
     ),
     SlideData(
-      title: 'Latest Technology',
-      subtitle: 'Stay ahead with cutting-edge gadgets and accessories',
-      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=600&fit=crop',
-      buttonText: 'Shop Now',
+      title: 'طباعة احترافية ترفع قيمة منتجك',
+      subtitle: 'من الكارت الصغير لحد التغليف الكامل، نوفرلك خامات ممتازة تسيب انطباع يدوم.',
+      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&h=600&fit=crop',
+      buttonText: 'اطلب دلوقتي',
     ),
     SlideData(
-      title: 'Premium Quality',
-      subtitle: 'Handpicked products that exceed your expectations',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop',
-      buttonText: 'View Products',
+      title: 'حلول متكاملة لمصانع الملابس والبراندات',
+      subtitle: 'وفر وقتك وخلي كل مستلزماتك من مكان واحد: أكياس، كروت، بادجات، بوكسات واستيكرات.',
+      image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&h=600&fit=crop',
+      buttonText: 'اكتشف المزيد',
     ),
   ];
 
@@ -168,7 +168,7 @@ class _HeroHeaderState extends State<HeroHeader> with TickerProviderStateMixin {
                                   offset: Offset(-textParallax * 0.3, 0),
                                   child: Text(
                                     slides[_currentSlide].title,
-                                    style: GoogleFonts.poppins(
+                                    style: GoogleFonts.cairo(
                                       fontSize: 48,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -181,7 +181,7 @@ class _HeroHeaderState extends State<HeroHeader> with TickerProviderStateMixin {
                                   offset: Offset(-textParallax * 0.5, 0),
                                   child: Text(
                                     slides[_currentSlide].subtitle,
-                                    style: GoogleFonts.poppins(
+                                    style: GoogleFonts.cairo(
                                       fontSize: 18,
                                       color: Colors.white.withOpacity(0.9),
                                     ),
@@ -220,7 +220,7 @@ class _HeroHeaderState extends State<HeroHeader> with TickerProviderStateMixin {
                                         children: [
                                           Text(
                                             slides[_currentSlide].buttonText,
-                                            style: GoogleFonts.poppins(
+                                            style: GoogleFonts.cairo(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16,
                                             ),

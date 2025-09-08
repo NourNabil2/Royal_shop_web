@@ -344,7 +344,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               const SizedBox(height: 16),
               Text(
                 'No images available',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.cairo(
                   fontSize: config['bodySize'],
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -798,7 +798,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                       const SizedBox(width: 8),
                       Text(
                         widget.product.category.isNotEmpty ? widget.product.category : 'Premium Collection',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.cairo(
                           fontSize: config['isMobile'] ? 11.0 : 15.0,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -835,7 +835,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     ).createShader(bounds),
                     child: Text(
                       widget.product.name,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.cairo(
                         fontSize: config['titleSize'].toDouble(),
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
@@ -879,66 +879,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                         ),
                       ],
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: config['isMobile'] ? 8.0 : 12.0,
-                              vertical: config['isMobile'] ? 4.0 : 6.0
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: config['isMobile'] ? 14.0 : 18.0,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '4.8',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.amber.shade700,
-                                  fontSize: config['isMobile'] ? 12.0 : 14.0,
-                                ),
-                              ),
-                            ],
-                          ),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: config['isMobile'] ? 6.0 : 8.0,
+                          vertical: config['isMobile'] ? 2.0 : 4.0
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.green.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        widget.product.inStock ? 'In Stock' : 'Out of Stock',
+                        style: TextStyle(
+                          color: widget.product.inStock ? Colors.green.shade700 : Colors.red.shade700,
+                          fontSize: config['isMobile'] ? 10.0 : 12.0,
+                          fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(width: 12),
-                        Text(
-                          '124 reviews',
-                          style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                            fontSize: config['isMobile'] ? 12.0 : 14.0,
-                          ),
-                        ),
-                        const Spacer(),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: config['isMobile'] ? 6.0 : 8.0,
-                              vertical: config['isMobile'] ? 2.0 : 4.0
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.green.withOpacity(0.3)),
-                          ),
-                          child: Text(
-                            'In Stock',
-                            style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontSize: config['isMobile'] ? 10.0 : 12.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -946,144 +904,144 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             },
           ),
 
-          SizedBox(height: config['isMobile'] ? 20.0 : 28.0),
+          // SizedBox(height: config['isMobile'] ? 20.0 : 28.0),
 
-          // Enhanced Price Section with Responsive Animation
-          AnimatedBuilder(
-            animation: _floatingController,
-            builder: (context, child) {
-              return TweenAnimationBuilder<double>(
-                duration: const Duration(milliseconds: 1000),
-                tween: Tween(begin: 0.0, end: 1.0),
-                curve: Curves.elasticOut,
-                builder: (context, value, child) {
-                  return Transform.translate(
-                    offset: Offset(
-                        0,
-                        (math.sin(_floatingController.value * 2 * math.pi) * 3) +
-                            (30 * (1 - value))
-                    ),
-                    child: Opacity(
-                      opacity: value.clamp(0.0, 1.0),
-                      child: Container(
-                        padding: EdgeInsets.all(config['isMobile'] ? 16.0 : 28.0),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Theme.of(context).colorScheme.primary.withOpacity(0.12),
-                              Theme.of(context).colorScheme.secondary.withOpacity(0.12),
-                              Theme.of(context).colorScheme.tertiary.withOpacity(0.12),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
-                              blurRadius: 25,
-                              offset: const Offset(0, 12),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Price',
-                                        style: TextStyle(
-                                          fontSize: config['isMobile'] ? 14.0 : 18.0,
-                                          fontWeight: FontWeight.w500,
-                                          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Icon(
-                                        Icons.local_offer,
-                                        size: config['isMobile'] ? 14.0 : 18.0,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          '${widget.product.price.toStringAsFixed(2)} EGP',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: config['priceSize'].toDouble(),
-                                            fontWeight: FontWeight.w900,
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      if (!config['isMobile'])
-                                        Text(
-                                          (widget.product.price * 1.25).toStringAsFixed(2),
-                                          style: TextStyle(
-                                            fontSize: config['isMobile'] ? 14.0 : 20.0,
-                                            decoration: TextDecoration.lineThrough,
-                                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: config['isMobile'] ? 12.0 : 20.0,
-                                  vertical: config['isMobile'] ? 6.0 : 12.0
-                              ),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Colors.orange, Colors.deepOrange, Colors.red.shade400],
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.orange.withOpacity(0.4),
-                                    blurRadius: 15,
-                                    offset: const Offset(0, 6),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                '20% OFF',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: config['isMobile'] ? 12.0 : 16.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+          // // Enhanced Price Section with Responsive Animation
+          // AnimatedBuilder(
+          //   animation: _floatingController,
+          //   builder: (context, child) {
+          //     return TweenAnimationBuilder<double>(
+          //       duration: const Duration(milliseconds: 1000),
+          //       tween: Tween(begin: 0.0, end: 1.0),
+          //       curve: Curves.elasticOut,
+          //       builder: (context, value, child) {
+          //         return Transform.translate(
+          //           offset: Offset(
+          //               0,
+          //               (math.sin(_floatingController.value * 2 * math.pi) * 3) +
+          //                   (30 * (1 - value))
+          //           ),
+          //           child: Opacity(
+          //             opacity: value.clamp(0.0, 1.0),
+          //             child: Container(
+          //               padding: EdgeInsets.all(config['isMobile'] ? 16.0 : 28.0),
+          //               decoration: BoxDecoration(
+          //                 gradient: LinearGradient(
+          //                   begin: Alignment.topLeft,
+          //                   end: Alignment.bottomRight,
+          //                   colors: [
+          //                     Theme.of(context).colorScheme.primary.withOpacity(0.12),
+          //                     Theme.of(context).colorScheme.secondary.withOpacity(0.12),
+          //                     Theme.of(context).colorScheme.tertiary.withOpacity(0.12),
+          //                   ],
+          //                 ),
+          //                 borderRadius: BorderRadius.circular(25),
+          //                 border: Border.all(
+          //                   color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+          //                 ),
+          //                 boxShadow: [
+          //                   BoxShadow(
+          //                     color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+          //                     blurRadius: 25,
+          //                     offset: const Offset(0, 12),
+          //                   ),
+          //                 ],
+          //               ),
+          //               child: Row(
+          //                 children: [
+          //                   Expanded(
+          //                     child: Column(
+          //                       crossAxisAlignment: CrossAxisAlignment.start,
+          //                       children: [
+          //                         Row(
+          //                           children: [
+          //                             Text(
+          //                               'Price',
+          //                               style: TextStyle(
+          //                                 fontSize: config['isMobile'] ? 14.0 : 18.0,
+          //                                 fontWeight: FontWeight.w500,
+          //                                 color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+          //                               ),
+          //                             ),
+          //                             const SizedBox(width: 8),
+          //                             Icon(
+          //                               Icons.local_offer,
+          //                               size: config['isMobile'] ? 14.0 : 18.0,
+          //                               color: Theme.of(context).colorScheme.primary,
+          //                             ),
+          //                           ],
+          //                         ),
+          //                         const SizedBox(height: 6),
+          //                         Row(
+          //                           crossAxisAlignment: CrossAxisAlignment.end,
+          //                           children: [
+          //                             Flexible(
+          //                               child: Text(
+          //                                 '${widget.product.price.toStringAsFixed(2)} EGP',
+          //                                 style: GoogleFonts.cairo(
+          //                                   fontSize: config['priceSize'].toDouble(),
+          //                                   fontWeight: FontWeight.w900,
+          //                                   color: Theme.of(context).colorScheme.primary,
+          //                                 ),
+          //                                 overflow: TextOverflow.ellipsis,
+          //                               ),
+          //                             ),
+          //                             const SizedBox(width: 12),
+          //                             if (!config['isMobile'])
+          //                               Text(
+          //                                 (widget.product.price * 1.25).toStringAsFixed(2),
+          //                                 style: TextStyle(
+          //                                   fontSize: config['isMobile'] ? 14.0 : 20.0,
+          //                                   decoration: TextDecoration.lineThrough,
+          //                                   color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+          //                                 ),
+          //                               ),
+          //                           ],
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                   Container(
+          //                     padding: EdgeInsets.symmetric(
+          //                         horizontal: config['isMobile'] ? 12.0 : 20.0,
+          //                         vertical: config['isMobile'] ? 6.0 : 12.0
+          //                     ),
+          //                     decoration: BoxDecoration(
+          //                       gradient: LinearGradient(
+          //                         colors: [Colors.orange, Colors.deepOrange, Colors.red.shade400],
+          //                       ),
+          //                       borderRadius: BorderRadius.circular(16),
+          //                       boxShadow: [
+          //                         BoxShadow(
+          //                           color: Colors.orange.withOpacity(0.4),
+          //                           blurRadius: 15,
+          //                           offset: const Offset(0, 6),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                     child: Text(
+          //                       '20% OFF',
+          //                       style: GoogleFonts.cairo(
+          //                         color: Colors.white,
+          //                         fontWeight: FontWeight.bold,
+          //                         fontSize: config['isMobile'] ? 12.0 : 16.0,
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
 
-          SizedBox(height: config['isMobile'] ? 24.0 : 36.0),
+          // SizedBox(height: config['isMobile'] ? 24.0 : 36.0),
 
-          // Enhanced Quantity Selector
-          _buildAdvancedQuantitySelector(context, config).animate().fadeIn(delay: 600.ms).slideX(begin: -0.2, curve: Curves.easeOutBack),
+          // // Enhanced Quantity Selector
+          // _buildAdvancedQuantitySelector(context, config).animate().fadeIn(delay: 600.ms).slideX(begin: -0.2, curve: Curves.easeOutBack),
 
           SizedBox(height: config['isMobile'] ? 24.0 : 40.0),
 
@@ -1125,8 +1083,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              'Description',
-                              style: GoogleFonts.poppins(
+                              'وصف',
+                              style: GoogleFonts.cairo(
                                 fontSize: config['isMobile'] ? 18.0 : 26.0,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -1188,7 +1146,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
           const SizedBox(width: 12),
           Text(
             'Quantity',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.cairo(
               fontSize: config['isMobile'] ? 16.0 : 18.0,
               fontWeight: FontWeight.w600,
             ),
@@ -1233,7 +1191,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                   ),
                   child: Text(
                     '$_quantity',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.cairo(
                       fontWeight: FontWeight.bold,
                       fontSize: config['isMobile'] ? 16.0 : 18.0,
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -1300,8 +1258,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Specifications',
-                      style: GoogleFonts.poppins(
+                      'تفاصيل',
+                      style: GoogleFonts.cairo(
                         fontSize: config['isMobile'] ? 18.0 : 22.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1309,11 +1267,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                   ],
                 ),
                 const SizedBox(height: 20),
-                _buildSpecItem('Brand', 'Premium Brand', Icons.business, config),
-                _buildSpecItem('Material', 'High Quality', Icons.texture, config),
-                _buildSpecItem('Weight', '2.5 kg', Icons.fitness_center, config),
-                _buildSpecItem('Dimensions', '30 x 20 x 15 cm', Icons.straighten, config),
-                _buildSpecItem('Warranty', '2 Years', Icons.verified_user, config),
+                _buildSpecItem('Brand', 'Royal Brand', Icons.business, config),
+                _buildSpecItem('خامه', widget.product.matrial, Icons.texture, config),
+                _buildSpecItem('مقاس', widget.product.dimensions ?? 'مخصص', Icons.straighten, config),
+                _buildSpecItem('الاعتمادية', 'الافضل', Icons.verified_user, config),
               ],
             ),
           ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.3),
@@ -1349,8 +1306,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Features',
-                      style: GoogleFonts.poppins(
+                      'الميزات',
+                      style: GoogleFonts.cairo(
                         fontSize: config['isMobile'] ? 18.0 : 22.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1358,11 +1315,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                   ],
                 ),
                 const SizedBox(height: 20),
-                _buildFeatureItem('Premium Quality', Icons.diamond, config),
-                _buildFeatureItem('Free Shipping', Icons.local_shipping, config),
-                _buildFeatureItem('Secure Payment', Icons.security, config),
+                _buildFeatureItem('افضل خامات', Icons.diamond, config),
+                _buildFeatureItem('شحن لجميع المحافظات', Icons.local_shipping, config),
+                _buildFeatureItem('ثقه بين العملاء', Icons.security, config),
                 _buildFeatureItem('24/7 Support', Icons.support_agent, config),
-                _buildFeatureItem('Gift Wrapping', Icons.card_giftcard, config),
+                //_buildFeatureItem('Gift Wrapping', Icons.card_giftcard, config),
               ],
             ),
           ).animate().fadeIn(delay: 600.ms).slideX(begin: 0.3),
@@ -1403,7 +1360,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 ),
                 Text(
                   value,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.cairo(
                     fontSize: config['isMobile'] ? 14.0 : 16.0,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1475,8 +1432,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     size: config['isMobile'] ? 16.0 : 20.0,
                   ),
                   label: Text(
-                    'WhatsApp',
-                    style: GoogleFonts.poppins(
+                    'واتساب',
+                    style: GoogleFonts.cairo(
                       fontWeight: FontWeight.w600,
                       fontSize: config['isMobile'] ? 14.0 : 16.0,
                       color: Colors.white,
@@ -1486,43 +1443,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
                     padding: EdgeInsets.symmetric(vertical: config['isMobile'] ? 14.0 : 18.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    _showAddToCartDialog(context, config);
-                    HapticFeedback.lightImpact();
-                  },
-                  icon: Icon(
-                    Icons.shopping_cart_outlined,
-                    size: config['isMobile'] ? 16.0 : 20.0,
-                  ),
-                  label: Text(
-                    'Cart',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: config['isMobile'] ? 14.0 : 16.0,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: config['isMobile'] ? 14.0 : 18.0),
-                    side: BorderSide.none,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -1549,8 +1469,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 size: config['isMobile'] ? 16.0 : 20.0,
               ),
               label: Text(
-                'Back to Products',
-                style: GoogleFonts.poppins(
+                'الرجوع للرئيسية',
+                style: GoogleFonts.cairo(
                   fontWeight: FontWeight.w600,
                   fontSize: config['isMobile'] ? 14.0 : 16.0,
                 ),
@@ -1605,7 +1525,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               ),
               label: Text(
                 'Quick Actions',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.cairo(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: config['isMobile'] ? 12.0 : 14.0,
@@ -1703,7 +1623,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 const SizedBox(width: 12),
                 Text(
                   'Share Product',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.cairo(
                     fontSize: config['isMobile'] ? 20.0 : 24.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1772,7 +1692,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
           const SizedBox(height: 12),
           Text(
             label,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.cairo(
               fontSize: config['isMobile'] ? 12.0 : 14.0,
               fontWeight: FontWeight.w500,
             ),
@@ -1794,7 +1714,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             const SizedBox(width: 12),
             Text(
               'Product link copied to clipboard!',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+              style: GoogleFonts.cairo(fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -1844,7 +1764,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             Flexible(
               child: Text(
                 'Added to Cart',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.cairo(
                   fontWeight: FontWeight.bold,
                   fontSize: config['isMobile'] ? 16.0 : 18.0,
                 ),
@@ -1854,7 +1774,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
         ),
         content: Text(
           '${widget.product.name} (Qty: $_quantity) has been added to your cart.',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.cairo(
             fontSize: config['isMobile'] ? 14.0 : 16.0,
           ),
         ),
@@ -1863,7 +1783,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Continue Shopping',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.cairo(
                 fontWeight: FontWeight.w600,
                 fontSize: config['isMobile'] ? 12.0 : 14.0,
               ),
@@ -1881,7 +1801,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             ),
             child: Text(
               'View Cart',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.cairo(
                 fontWeight: FontWeight.w600,
                 fontSize: config['isMobile'] ? 12.0 : 14.0,
               ),
@@ -1924,7 +1844,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 const SizedBox(width: 12),
                 Text(
                   'Quick Actions',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.cairo(
                     fontSize: config['isMobile'] ? 20.0 : 24.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1947,7 +1867,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               ),
               title: Text(
                 'Compare Products',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.cairo(
                   fontWeight: FontWeight.w600,
                   fontSize: config['isMobile'] ? 14.0 : 16.0,
                 ),
@@ -1966,8 +1886,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   }
 
   void _launchWhatsApp(Product product) {
-    final phone = "+1234567890";
-    final text = "I'm interested in ${product.name} - \${product.price}. Quantity: $_quantity";
+    const phone = "+201505280117";
+    final text = "مرحبًا، أنا مهتم بمنتج ${product.name}. هل يمكنني معرفة المزيد من التفاصيل؟";
     final url = "https://wa.me/$phone?text=${Uri.encodeComponent(text)}";
     print("WhatsApp URL: $url");
     // In a real app, you would use url_launcher package:

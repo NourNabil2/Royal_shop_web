@@ -1,12 +1,12 @@
-
-// Footer Section
+// Footer Section (No Quick Links — Facebook & WhatsApp only)
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../core/routes/configuration.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,43 +22,41 @@ class FooterSection extends StatelessWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          bool isDesktop = constraints.maxWidth > 800;
+          final isDesktop = constraints.maxWidth > 800;
 
           if (isDesktop) {
+            // عمودين: معلومات الشركة + السوشيال
             return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Company Info
                 Expanded(child: _buildCompanyInfo(context)),
-                const SizedBox(width: 40),
-                Expanded(child: _buildQuickLinks(context)),
-                const SizedBox(width: 40),
-                Expanded(child: _buildSocialMedia(context)),
+                const SizedBox(width: 60),
+                // Social Only
+                Expanded(child: _buildSocialOnly(context)),
               ],
             );
           } else {
+            // موبايل: عمودي
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildCompanyInfo(context),
-                const SizedBox(height: 32),
-                _buildQuickLinks(context),
-                const SizedBox(height: 32),
-                _buildSocialMedia(context),
-                const SizedBox(height: 32),
-                _buildCopyright(context),
+                const SizedBox(height: 28),
+                _buildSocialOnly(context),
               ],
             );
           }
         },
       ),
-    ).animate().fadeIn(delay: 800.ms);
+    ).animate().fadeIn(delay: 500.ms);
   }
 
   Widget _buildCompanyInfo(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Logo + Brand
         Row(
           children: [
             Icon(
@@ -68,139 +66,166 @@ class FooterSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'ModernShop',
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
+              'Royal',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Symphony',
+                fontSize: 40,
+                letterSpacing: 1.0,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.primary,
+                height: 1.2,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
         const SizedBox(height: 16),
         Text(
-          'Discover premium products that combine quality with innovation. Your satisfaction is our priority.',
+          'نقدّم لعملائنا مجموعة مميزة من الأكياس والكروت المصممة خصيصًا لتلبية احتياجات مصانع الكروبت والبادجات والملابس، '
+              'حيث نحرص على الدمج بين الجودة العالية والتصميم الأنيق لنساعدكم في إبراز هوية علامتكم التجارية بصورة احترافية تلفت الأنظار وتترك انطباعًا يدوم.',
           style: TextStyle(
             color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
             fontSize: 14,
-            height: 1.5,
+            height: 1.6,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildQuickLinks(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Quick Links',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildFooterLink(context, 'Home', () => router.go('/')),
-        _buildFooterLink(context, 'Products', () => router.go('/')),
-        _buildFooterLink(context, 'Contact', () => router.go('/contact')),
-        _buildFooterLink(context, 'About Us', () {}),
-      ],
+  Widget _buildSocialOnly(BuildContext context) {
+    final titleStyle = GoogleFonts.cairo(
+      fontWeight: FontWeight.w600,
+      fontSize: 18,
+      color: Theme.of(context).textTheme.bodyLarge?.color,
     );
-  }
 
-  Widget _buildSocialMedia(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Follow Us',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-          ),
-        ),
+        Text('تابعنا أو تواصل معنا', style: titleStyle),
         const SizedBox(height: 16),
+
+        // Icons Row: Facebook + WhatsApp
         Row(
           children: [
-            _buildSocialIcon(context, Icons.facebook, () {}),
+            _buildSocialIcon(
+              context,
+              icon: Icons.facebook,
+              tooltip: 'Facebook',
+              onTap: _openFacebook,
+            ),
             const SizedBox(width: 12),
-            _buildSocialIcon(context, Icons.camera_alt, () {}),
-            const SizedBox(width: 12),
-            _buildSocialIcon(context, Icons.alternate_email, () {}),
+            _buildSocialIcon(
+              context,
+              icon: Icons.chat, // نعرض أيقونة محايدة للواتساب (ممكن تبدلها بأي باكدج أيقونات)
+              tooltip: 'واتساب',
+              onTap: _launchWhatsApp,
+              accentColor: const Color(0xFF25D366),
+            ),
           ],
         ),
-        const SizedBox(height: 16),
-        ElevatedButton.icon(
-          onPressed: () => _launchWhatsApp(),
-          icon: const Icon(Icons.chat, color: Colors.white, size: 16),
-          label: Text(
-            'WhatsApp',
-            style: TextStyle(color: Colors.white, fontSize: 12),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF25D366),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        ),
+        const SizedBox(height: 24),
+        _buildCopyright(context),
       ],
     );
   }
 
-  Widget _buildFooterLink(BuildContext context, String text, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+  Widget _buildSocialIcon(
+      BuildContext context, {
+        required IconData icon,
+        required VoidCallback onTap,
+        String? tooltip,
+        Color? accentColor,
+      }) {
+    final bg = (accentColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.1);
+    final fg = accentColor ?? Theme.of(context).colorScheme.primary;
+
+    return Tooltip(
+      message: tooltip ?? '',
       child: InkWell(
         onTap: onTap,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-            fontSize: 14,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: (accentColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.18)),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialIcon(BuildContext context, IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(
-          icon,
-          color: Theme.of(context).colorScheme.primary,
-          size: 20,
+          child: Icon(icon, color: fg, size: 20),
         ),
       ),
     );
   }
 
   Widget _buildCopyright(BuildContext context) {
-    return Center(
-      child: Text(
-        '© 2025 ModernShop. All rights reserved.',
-        style: TextStyle(
-          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
-          fontSize: 12,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '© 2025 Royal. جميع الحقوق محفوظة.',
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.55),
+            fontSize: 12,
+          ),
         ),
-      ),
+        const SizedBox(height: 8),
+        InkWell(
+          onTap: () async {
+            final Uri emailUri = Uri(
+              scheme: 'mailto',
+              path: 'nour60g@gmail.com',
+              query: Uri.encodeFull('subject=استفسار من موقع Royal&body=مرحبًا Nour،'),
+            );
+
+            if (await canLaunchUrl(emailUri)) {
+              await launchUrl(emailUri);
+            } else {
+              debugPrint('Could not launch email client');
+            }
+          },
+          child: Text(
+            'Developed by Nour Nabil',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        )
+
+      ],
     );
   }
 
-  void _launchWhatsApp() {
-    final phone = "+1234567890";
-    final text = "Hello! I'd like to get in touch.";
-    final url = "https://wa.me/$phone?text=${Uri.encodeComponent(text)}";
-    print("WhatsApp URL: $url");
+
+  // ====== Actions ======
+  void _openFacebook() async {
+    const url = 'https://www.facebook.com/share/1Cj6e45vbe/';
+    final uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint('Could not launch $url');
+    }
   }
+
+  void _launchWhatsApp() async {
+    const internationalPhone = '201505280117'; // +20
+    final text = 'مرحبًا! أرغب في الاستفسار عن المنتجات.';
+    final url = 'https://wa.me/$internationalPhone?text=${Uri.encodeComponent(text)}';
+    final uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint('Could not launch $url');
+    }
+  }
+
 }
