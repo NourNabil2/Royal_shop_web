@@ -1703,7 +1703,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   }
 
   void _copyToClipboard(BuildContext context) {
-    final productUrl = 'https://yourstore.com/product/${widget.product.id}';
+    final productUrl = 'https://royal-design-3igs38d24-nours-projects-576988df.vercel.app/#/product/${widget.product.id}';
     Clipboard.setData(ClipboardData(text: productUrl));
 
     ScaffoldMessenger.of(context).showSnackBar(
